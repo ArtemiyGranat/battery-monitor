@@ -9,15 +9,15 @@ int main() {
 
     // Getting battery percentage
     int r = sd_bus_call_method(bus,
-                                    "org.freedesktop.UPower",
-                                    "/org/freedesktop/UPower/devices/battery_BAT0",
-                                    "org.freedesktop.DBus.Properties",
-                                    "Get",
-                                    &error,
-                                    &msg,
-                                    "ss",
-                                    "org.freedesktop.UPower.Device",
-                                    "Percentage");
+                               "org.freedesktop.UPower",
+                               "/org/freedesktop/UPower/devices/battery_BAT0",
+                               "org.freedesktop.DBus.Properties",
+                               "Get",
+                               &error,
+                               &msg,
+                               "ss",
+                               "org.freedesktop.UPower.Device",
+                               "Percentage");
     if (r < 0) {
         std::cerr << "Failed to call method: " << strerror(-r) << std::endl;
         sd_bus_error_free(&error);
@@ -36,7 +36,7 @@ int main() {
         int r_notify = sd_bus_message_new_method_call(bus, &msg, "org.freedesktop.Notifications",
             "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify");
         if (r_notify < 0) {
-            std::cerr << "sd_bus_message_new_method_call: " << strerror(-r_notify) << '\n';
+            std::cerr << "Failed to call method: " << strerror(-r_notify) << '\n';
             return -1;
         }
 
@@ -45,7 +45,7 @@ int main() {
         r_notify = sd_bus_message_append(msg, "susssasa{sv}i", "battery-monitor", 0, "dialog-information",
             "Battery monitor", percentage_str.c_str(), 0, 0, -1);
         if (r_notify < 0) {
-            std::cerr << "sd_bus_message_append: " << strerror(-r_notify) << '\n';
+            std::cerr << "Failed to send notification: " << strerror(-r_notify) << '\n';
             sd_bus_message_unref(msg);
             return -1;
         }
