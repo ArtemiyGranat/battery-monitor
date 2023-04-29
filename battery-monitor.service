@@ -1,0 +1,10 @@
+[Unit]
+Description=Sends battery monitor notification if battery percentage is less than 30%
+
+[Service]
+ExecStart=/bin/battery-monitor
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

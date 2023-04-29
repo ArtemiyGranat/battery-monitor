@@ -1,0 +1,9 @@
+[Unit]
+Description=Sends battery monitor notification if battery percentage is less than 30%
+
+[Timer]
+OnUnitActiveSec=20min
+Unit=battery-monitor.service
+
+[Install]
+WantedBy=timers.target
